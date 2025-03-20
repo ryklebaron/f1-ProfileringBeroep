@@ -1,6 +1,6 @@
 .PHONY: python pdf epub summary all clean
 
-all: python pdf
+all:  pdf
 
 python:
 	python3 -m venv venv && . venv/bin/activate && pip install -r python/requirements.txt && cd python && python generate.py

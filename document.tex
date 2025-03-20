@@ -1,7 +1,7 @@
 \documentclass[
     11pt,
     a4paper,
-    % oneside, % voor enkel digitale output, als je print en bind is 2-zijdig allicht beter
+    oneside, % voor enkel digitale output, als je print en bind is 2-zijdig allicht beter
     hidelinks, % links zijn clickable in pdf maar dat wordt niet getoond door kleur of zo
     dutch,
     ]{memoir}
@@ -26,11 +26,11 @@
 % \colorlet{HeadingsColor}{DarkBlue} % Voor een iets formelere minder opvallende kleur
 
 % apa-style citations en bibliografie
-\usepackage[style=apa,sortcites=true,sorting=nyt,backend=biber]{biblatex}
-\DeclareLanguageMapping{dutch}{dutch-apa}
-\bibliography{bibliography}
+%\usepackage[style=apa,sortcites=true,sorting=nyt,backend=biber]{biblatex}
+%\DeclareLanguageMapping{dutch}{dutch-apa}
+%\bibliography{bibliography}
 
-\setlrmarginsandblock{3.5cm}{2.5cm}{*} % bij oneside en niet printen/binden is links 2.5cm allicht beter
+\setlrmarginsandblock{2.5cm}{2.5cm}{*} % bij oneside en niet printen/binden is links 2.5cm allicht beter
 \setulmarginsandblock{2.5cm}{*}{1}
 \checkandfixthelayout
 
@@ -84,7 +84,7 @@
 
 \input{appendices}
 
-\printbibliography
+%\printbibliography
 
 \end{document}
 

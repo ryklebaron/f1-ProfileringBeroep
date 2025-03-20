@@ -1,0 +1,90 @@
+\documentclass[
+    11pt,
+    a4paper,
+    % oneside, % voor enkel digitale output, als je print en bind is 2-zijdig allicht beter
+    hidelinks, % links zijn clickable in pdf maar dat wordt niet getoond door kleur of zo
+    dutch,
+    ]{memoir}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{times}
+\usepackage{babel}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage{cleveref} % \cref of \Cref voor 'tabel 2.1' of 'Figuur 2.3'
+
+% Kleuren
+\definecolor{WindesheimBlue}{HTML}{00418C}
+\definecolor{WindesheimYellow}{HTML}{D7A500}
+\definecolor{DarkBlue}{HTML}{21435D}
+\colorlet{TitleColor}{WindesheimBlue}
+\colorlet{HeadingsColor}{WindesheimBlue}
+% \colorlet{HeadingsColor}{DarkBlue} % Voor een iets formelere minder opvallende kleur
+
+% apa-style citations en bibliografie
+\usepackage[style=apa,sortcites=true,sorting=nyt,backend=biber]{biblatex}
+\DeclareLanguageMapping{dutch}{dutch-apa}
+\bibliography{bibliography}
+
+\setlrmarginsandblock{3.5cm}{2.5cm}{*} % bij oneside en niet printen/binden is links 2.5cm allicht beter
+\setulmarginsandblock{2.5cm}{*}{1}
+\checkandfixthelayout
+
+\OnehalfSpacing
+
+% Beïnvloed de ruimte tussen alle listitems in het document. 
+% Wanneer er per-lijst controlle nodig is zet dit dan na begin van de list zelf
+% \firmlists % medium ruimte tussen list items
+% \tightlists % weinig ruimte tussen list items
+
+% Kies een chapter style (er zijn er meer, zie texdoc memoir)
+%\chapterstyle{bianchi}
+%\chapterstyle{ger}
+\chapterstyle{madsen}
+%\chapterstyle{ell}
+
+% Gebruik van kleur in je titels enz.
+% \addtodef{\printchaptername}{\color{HeadingsColor}}{} % Chapter titles
+% \addtoiargdef{\printtoctitle}{\color{HeadingsColor}}{} % TOC title
+\addtodef{\cftchapterfont}{\color{HeadingsColor}}{}
+\addtodef{\cftsectionfont}{\color{HeadingsColor}}{}
+\addtodef{\cftsubsectionfont}{\color{HeadingsColor}}{}
+% \addtodef{\tocheadstart}{\color{HeadingsColor}}{} % Whole TOC
+% \setsecheadstyle{\color{TitleHeadingsColorColor}}
+\addtodef{\secheadstyle}{\color{HeadingsColor}}{} % Section titles
+\addtodef{\subsecheadstyle}{\color{HeadingsColor}}{} % Subsection titles
+
+\maxsecnumdepth{subsection} % chapters, sections, and subsections are numbered
+\maxtocdepth{subsection} % chapters, sections, and subsections are in the Table of Contents
+
+% Mooie displayquotes (\begin{displayquote}[Piet]Wie niet waagt die niet wint\end{displayquote})
+\renewcommand{\mkbegdispquote}[2]{\itshape\selectfont\large}
+\renewcommand{\mkenddispquote}[2]{#1 \vspace{-1em}\begin{flushright}#2\end{flushright}}
+\renewcommand{\mkcitation}[1]{--- {\upshape\normalsize #1}}
+
+\begin{document}
+
+\thispagestyle{empty}
+\input{titlepage}
+\cleardoublepage
+
+
+\tableofcontents*
+
+\clearpage
+
+
+\input{body}
+
+\appendix
+
+\input{appendices}
+
+\printbibliography
+
+\end{document}
+

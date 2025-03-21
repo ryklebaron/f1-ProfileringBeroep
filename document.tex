@@ -1,34 +1,46 @@
+%! TeX program = lualatex
 \documentclass[
     11pt,
     a4paper,
     oneside, % voor enkel digitale output, als je print en bind is 2-zijdig allicht beter
-    hidelinks, % links zijn clickable in pdf maar dat wordt niet getoond door kleur of zo
+    % hidelinks, % links zijn clickable in pdf maar dat wordt niet getoond door kleur of zo
     dutch,
     ]{memoir}
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage{fontenc}
 \usepackage{microtype}
 \usepackage{graphicx}
+\usepackage{wrapfig}
 \usepackage{xcolor}
-\usepackage{times}
 \usepackage{babel}
 \usepackage{csquotes}
+
+\usepackage[blankBeforeHeading, html, fencedCode,
+            citations, definitionLists,
+            hashEnumerators, smartEllipses, hybrid, pipeTables]{markdown}
+
 \usepackage{hyperref}
-\usepackage{cleveref} % \cref of \Cref voor 'tabel 2.1' of 'Figuur 2.3'
+\usepackage{cleveref}  % \cref of \Cref voor 'tabel 2.1' of 'Figuur 2.3'
+\usepackage{float}     % voor [H] float option om 'here' te forceren
+\usepackage{flafter}   % plaats floats nooit voor punt waar ze zijn gedeclareerd
+\usepackage{fontspec}  % Voor gebruik van opentype fonts enz.
+\usepackage{xspace}
 
-% Kleuren
-\definecolor{WindesheimBlue}{HTML}{00418C}
-\definecolor{WindesheimYellow}{HTML}{D7A500}
-\definecolor{DarkBlue}{HTML}{21435D}
-\colorlet{TitleColor}{WindesheimBlue}
-\colorlet{HeadingsColor}{WindesheimBlue}
-% \colorlet{HeadingsColor}{DarkBlue} % Voor een iets formelere minder opvallende kleur
+% fontpackage
+\usepackage{lmodern} % de default
+% \usepackage{libertine}
+% \usepackage{times}
+% \usepackage{noto}
 
-% apa-style citations en bibliografie
-%\usepackage[style=apa,sortcites=true,sorting=nyt,backend=biber]{biblatex}
-%\DeclareLanguageMapping{dutch}{dutch-apa}
-%\bibliography{bibliography}
+% Vervanging van font shapes die niet bestaan in lmodern
+\DeclareFontShape{TU}{lmr}{bx}{sc}{<->ssub*lmr/m/sc}{}
+\DeclareFontShape{TU}{lmss}{bx}{sc}{<->ssub*lmss/bx/n}{}
+
+\directlua{require("mystyle/functions.lua")}
+\usepackage{mystyle/colors}
+\usepackage{mystyle/citations}
+\usepackage{mystyle/quotations}
+\usepackage{mystyle/chapters}
 
 \setlrmarginsandblock{2.5cm}{2.5cm}{*} % bij oneside en niet printen/binden is links 2.5cm allicht beter
 \setulmarginsandblock{2.5cm}{*}{1}
@@ -41,30 +53,45 @@
 % \firmlists % medium ruimte tussen list items
 % \tightlists % weinig ruimte tussen list items
 
-% Kies een chapter style (er zijn er meer, zie texdoc memoir)
-%\chapterstyle{bianchi}
-%\chapterstyle{ger}
-\chapterstyle{madsen}
-%\chapterstyle{ell}
+% Bronvermelding bij bijvoorbeeld figuren of tabellen
+\newcommand{\source}[1]{\vspace{-5pt}Bron: {#1} }
 
-% Gebruik van kleur in je titels enz.
-% \addtodef{\printchaptername}{\color{HeadingsColor}}{} % Chapter titles
-% \addtoiargdef{\printtoctitle}{\color{HeadingsColor}}{} % TOC title
-\addtodef{\cftchapterfont}{\color{HeadingsColor}}{}
-\addtodef{\cftsectionfont}{\color{HeadingsColor}}{}
-\addtodef{\cftsubsectionfont}{\color{HeadingsColor}}{}
-% \addtodef{\tocheadstart}{\color{HeadingsColor}}{} % Whole TOC
-% \setsecheadstyle{\color{TitleHeadingsColorColor}}
-\addtodef{\secheadstyle}{\color{HeadingsColor}}{} % Section titles
-\addtodef{\subsecheadstyle}{\color{HeadingsColor}}{} % Subsection titles
+\newcommand{\vraag}[1]{\vspace{5pt}\noindent\textit{#1}\vspace{0pt}\\}  % geknoei met vspace omdat pictureparagraph even te lastig is om goed te krijgen
+\newcommand{\stelling}[2]{\paragraph{#1} \textit{#2}\vspace{5pt}\\}
 
-\maxsecnumdepth{subsection} % chapters, sections, and subsections are numbered
-\maxtocdepth{subsection} % chapters, sections, and subsections are in the Table of Contents
+% Mijn eerste lua macro, voor het netjes neerzetten van acronyms met small caps
+\newcommand{\afko}[1]{\directlua{acronym("#1")}}
 
-% Mooie displayquotes (\begin{displayquote}[Piet]Wie niet waagt die niet wint\end{displayquote})
-\renewcommand{\mkbegdispquote}[2]{\itshape\selectfont\large}
-\renewcommand{\mkenddispquote}[2]{#1 \vspace{-1em}\begin{flushright}#2\end{flushright}}
-\renewcommand{\mkcitation}[1]{--- {\upshape\normalsize #1}}
+% iets mooiere %, lijkt beter wanneer dit direct volgt op een getal
+\newcommand*\pct{\scalebox{0.8}{\%}}
+
+% \newfontface{\remarkableFont}[Path = ./fonts/]{reMarkablePortrait-Medium-Web.otf}
+% \newcommand{\remarkable}[0]{{\remarkableFont reMarkable}\xspace}
+% \newcommand{\remarkable}[0]{reMarkable\xspace}
+
+
+% https://tex.stackexchange.com/questions/619760/put-picture-next-to-paragraph
+%Create a new minipage environment where paragraphs have indents
+\newlength{\currentparindent}
+\newenvironment{minipageparindent}[2][c]
+  {\setlength{\currentparindent}{\parindent}% save the value
+   \noindent\begin{minipage}[#1]{#2}% open the minipage
+   \setlength{\parindent}{\currentparindent}% restore the value
+  }
+  {\end{minipage}}
+
+%Create an environment that creates a paragraph with a picture next to it, both being aligned at the top.
+\newenvironment{pictureparagraph}[1]    %argument is an 'includegraphics' command
+    {\newcommand\picturetoplace{#1}     % using variable directly gives an error
+    \begin{minipageparindent}[t]{0.7\textwidth} %
+    \vspace{0pt}    %Make sure that the top base is at the absolute top
+    }   
+    {
+    \end{minipageparindent}
+    \begin{minipage}[t]{0.3\textwidth}
+    \vspace{0pt}    %Make sure that the top base is at the absolute top of the minipage
+    \picturetoplace
+    \end{minipage}\\}
 
 \begin{document}
 
@@ -80,11 +107,11 @@
 
 \input{body}
 
+{\raggedright\printbibliography}
+    
 \appendix
 
 \input{appendices}
-
-%\printbibliography
 
 \end{document}
 

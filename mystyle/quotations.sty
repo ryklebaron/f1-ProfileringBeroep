@@ -1,0 +1,12 @@
+\MakeOuterQuote{"} % automatisch vertaal " naar het juiste quote symbool
+\setquotestyle{english} % „nederlands”, “engels”
+
+% Mooie displayquotes (\begin{displayquote}[Piet]Wie niet waagt die niet wint\end{displayquote})
+\renewcommand{\mkbegdispquote}[2]{\itshape}
+\renewcommand{\mkenddispquote}[2]{#1
+\ifthenelse{\equal{#2}{}}{}{\vspace{-1em}\begin{flushright}#2\end{flushright}}
+}
+\renewcommand{\mkcitation}[1]{--- {\upshape\normalsize #1}}
+
+\definecolor{QuoteColor}{HTML}{808080}
+\newcommand{\say}[1]{\begin{displayquote}\leavevmode\rlap{\huge{\protect\makebox[-0.6em]{\textcolor{QuoteColor}{\raisebox{-0.2em}{``}}}}}#1\textcolor{QuoteColor}{\huge{\raisebox{-0.2em}{''}}}\end{displayquote}}

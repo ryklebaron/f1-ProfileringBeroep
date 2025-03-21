@@ -1,0 +1,19 @@
+% Kies een chapter style (er zijn er meer, zie texdoc memoir)
+%\chapterstyle{bianchi}
+%\chapterstyle{ger}
+\chapterstyle{madsen}
+% \chapterstyle{ell}
+
+% Gebruik van kleur in je titels enz.
+% \addtodef{\printchaptername}{\color{HeadingsColor}}{} % Chapter titles
+% \addtoiargdef{\printtoctitle}{\color{HeadingsColor}}{} % TOC title
+\addtodef{\cftchapterfont}{\color{HeadingsColor}}{}
+\addtodef{\cftsectionfont}{\color{HeadingsColor}}{}
+\addtodef{\cftsubsectionfont}{\color{HeadingsColor}}{}
+% \addtodef{\tocheadstart}{\color{HeadingsColor}}{} % Whole TOC
+% \setsecheadstyle{\color{TitleHeadingsColorColor}}
+\addtodef{\secheadstyle}{\color{HeadingsColor}}{} % Section titles
+\addtodef{\subsecheadstyle}{\color{HeadingsColor}}{} % Subsection titles
+
+\maxsecnumdepth{subsection} % chapters, sections, and subsections are numbered
+\maxtocdepth{subsection} % chapters, sections, and subsections are in the Table of Contents

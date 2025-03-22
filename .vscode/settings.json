@@ -1,0 +1,48 @@
+{
+    "latex-workshop.latex.outDir": "out",
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
+    "latex-workshop.latex.tools": [
+        // Compilation tools and commands
+        {
+            "name": "make_pdf",
+            "command": "make",
+            "args": ["pdf"]
+        },
+        {
+            "name": "make_epub",
+            "command": "make",
+            "args": ["epub"]
+        },
+        {
+            "name": "make_clean",
+            "command": "make",
+            "args": ["clean"]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        // Het eerste command wordt (by default) gebruikt voor de (auto) build
+        {
+            "name": "make pdf 🔃",
+            "tools": [
+                "make_pdf"
+            ]
+        },
+        {
+            "name": "make epub 🔃",
+            "tools": [
+                "make_epub"
+            ]
+        },
+        {
+            "name": "make clean 🔃",
+            "tools": [
+                "make_clean"
+            ]
+        }
+    ],
+
+    // Voor de LTeX spelling/grammatica check plugin
+    "ltex.language": "nl",
+    "cSpell.enabled": false, // om clash met cSpell plugin te voorkomen
+    
+}

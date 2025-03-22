@@ -13,6 +13,7 @@ epub:
 	cp *.tex out/epub
 	cp -a images out/epub
 	cp *.bib out/epub
+	cp -r mystyle out/epub
 	cd out/epub && tex4ebook -lf epub3 document.tex && biber document && tex4ebook -lf epub3 document.tex
 
 # Op ubuntu kan het zijn dat texlogsieve niet in het pad zit. Dit kan worden toegevoegd met iets als:
